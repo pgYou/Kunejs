@@ -1,0 +1,17 @@
+{
+  "name": "common-kune-server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node --loader ts-node/esm ./index.ts"
+  },
+  "extension": [
+    ".ts"
+  ],
+  "type": "module",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@kune/server",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.4",
+    "@types/ws": "^8.5.3"
+  }
+}

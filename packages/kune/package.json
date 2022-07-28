@@ -1,0 +1,12 @@
+{
+  "name": "@kune/kune",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}
