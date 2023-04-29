@@ -6,7 +6,7 @@ import commonjs from '@rollup/plugin-commonjs';
 
 export default [
   {
-    input: './packages/kune/index.ts',
+    input: './src/index.ts',
     output: {
       file: './umd/kune.umd.js', // 导出文件
       format: 'umd', // 打包文件支持的形式

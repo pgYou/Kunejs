@@ -2,16 +2,14 @@
   "name": "kunejs",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
   "scripts": {
-    "build": "rollup -c rollup.config.js && sh ./build.sh"
+    "dev:kune": "pnpm run dev --filter @kune/kune",
+    "build:kune-umd": "pnpm run build:umd --filter @kune/kune",
+    "dev:node-server": "pnpm run dev --filter @kune/node-server"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@babel/core": "^7.18.6",
-    "ws": "^8.8.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.18.6",
     "@rollup/plugin-commonjs": "^22.0.1",

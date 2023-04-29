@@ -1,8 +1,13 @@
 {
-  "name": "@kune/server",
+  "name": "@kune/node-server",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typeings": "dist/index.d.ts",
+  "scripts": {
+    "dev": "npm link && tsc --watch",
+    "build": "tsc"
+  },
   "directories": {
     "example": "example"
   },

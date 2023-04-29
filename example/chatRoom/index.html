@@ -4,10 +4,109 @@
 <head>
   <meta charset="utf-8" />
   <script src="https://unpkg.com/vue@next"></script>
-  <script src="../../umd/kune.umd.js"></script>
+  <script src="../../packages/kune/umd/kune.umd.js"></script>
 
   <meta name="viewport"
     content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,shrink-to-fit=no,viewport-fit=cover" />
+</head>
+
+<body>
+  <div id="app">
+    <div v-if="!this.isUserInited" class="init-panel">
+      <label htmlFor="name-input">Name </label>
+      <input id="name-input" type="text" style="margin: 0 10px;"></input>
+      <button @click="this.onInitUser">Confirm</button>
+    </div>
+    <div v-else class="chat-panel">
+      {{isConnected ? 'connected' : 'disconnected'}}
+      <div class="chats-list">
+        <div v-for="item in this.list" key="item.data"
+          :class="'chats-list-item ' + (item.fromWho.name == this.user.name ? 'right' : '')">
+          <div class="name">{{item.fromWho?.name}}</div>
+          <div class="msg">{{item.data}}</div>
+        </div>
+      </div>
+      <div class="chats-input-area">
+        <div id="msg-input" :contenteditable="this.isUserInited"></div>
+        <button :disabled="!this.isUserInited" @click="this.onSend">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    const url = 'ws://127.0.0.1:8080';
+    const app = {
+      data() {
+        return {
+          kune: null,
+          isConnected: false,
+          list: [],
+          user: null,
+        };
+      },
+      computed: {
+        isUserInited() {
+          return !!this.user?.name
+        },
+      },
+      updated() {
+        console.log(this);
+      },
+      methods: {
+        connectServer() {
+          this.kune = new Kune({ url, topic: 'chat-room' });
+          window.kune = this.kune;
+          this.kune.addListener('open', this.onOpen);
+          this.kune.addListener('close', this.onClose);
+          this.kune.addListener('error', this.onClose);
+
+          this.kune.addListener('message', this.onMessage);
+        },
+        onOpen() {
+          this.isConnected = true;
+        },
+        onClose() {
+          this.isConnected = false;
+        },
+        onMessage(event) {
+          console.log(event);
+          this.list.push(JSON.parse(event.data));
+        },
+        onSend() {
+          let dom = document.getElementById('msg-input');
+          const msgText = dom?.innerText;
+          if (msgText) {
+            const msg = {
+              data: msgText,
+              fromWho: this.user,
+            };
+            this.kune.send(msg);
+            dom && (dom.innerText = '');
+          }
+        },
+        onInitUser() {
+          const inputDom = document.getElementById('name-input');
+          const nameText = inputDom.value;
+          if (nameText) {
+            localStorage.setItem('userName', nameText)
+            this.user.name = localStorage.getItem('userName');
+          }
+        },
+      },
+      created() {
+        this.connectServer();
+        this.user = {
+          name: localStorage.getItem('userName'),
+        };
+      },
+      beforeUnmount() {
+        this.kune.wsInst.close();
+      },
+    };
+
+    Vue.createApp(app).mount('#app');
+  </script>
   <style type="text/css">
     .chats-input-area {
       display: flex;
@@ -83,104 +182,6 @@
       margin-left: 40px;
     }
   </style>
-</head>
-
-<body>
-  <div id="app">
-    <div v-if="!this.isUserInited" class="init-panel">
-      <label htmlFor="name-input">Name </label>
-      <input id="name-input" type="text" style="margin: 0 10px;"></input>
-      <button @click="this.onInitUser">Confirm</button>
-    </div>
-    <div v-else class="chat-panel">
-      {{isConnected ? 'connected' : 'disconnected'}}
-      <div class="chats-list">
-        <div v-for="item in this.list" key="item.data"
-          :class="'chats-list-item ' + (item.fromWho.name == this.user.name ? 'right' : '')">
-          <div class="name">{{item.fromWho?.name}}</div>
-          <div class="msg">{{item.data}}</div>
-        </div>
-      </div>
-      <div class="chats-input-area">
-        <div id="msg-input" :contenteditable="this.isUserInited"></div>
-        <button :disabled="!this.isUserInited" @click="this.onSend">
-          Send
-        </button>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript">
-    const url = 'ws://127.0.0.1:8080';
-    const app = {
-      data() {
-        return {
-          kune: null,
-          isConnected: false,
-          list: [],
-          user: null,
-        };
-      },
-      computed: {
-        isUserInited() {
-          return !!this.user?.name 
-        },
-      },
-      updated() {
-        console.log(this);
-      },
-      methods: {
-        connectServer() {
-          this.kune = new Kune({url, topic: 'chat-room'});
-          window.kune = this.kune;
-          this.kune.addEventListener('open', this.onOpen);
-          this.kune.addEventListener('close', this.onClose);
-          this.kune.addEventListener('error', this.onClose);
-          this.kune.onmessage(this.onMessage);
-        },
-        onOpen() {
-          this.isConnected = true;
-        },
-        onClose() {
-          this.isConnected = false;
-        },
-        onMessage(event) {
-          console.log(event);
-          this.list.push(JSON.parse(event.data));
-        },
-        onSend() {
-          let dom = document.getElementById('msg-input');
-          const msgText = dom?.innerText;
-          if (msgText) {
-            const msg = {
-              data: msgText,
-              fromWho: this.user,
-            };
-            this.kune.send(msg);
-            dom && (dom.innerText = '');
-          }
-        },
-        onInitUser() {
-          const inputDom = document.getElementById('name-input');
-          const nameText = inputDom.value;
-          if (nameText) {
-            localStorage.setItem('userName', nameText)
-            this.user.name = localStorage.getItem('userName');
-          }
-        },
-      },
-      created() {
-        this.connectServer();
-        this.user = {
-          name: localStorage.getItem('userName'),
-        };
-      },
-      beforeUnmount() {
-        this.kune.wsInst.close();
-      },
-    };
-
-    Vue.createApp(app).mount('#app');
-  </script>
 </body>
 
 </html>
