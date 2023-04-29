@@ -1,5 +1,5 @@
 {
-  "name": "@kune/node-server",
+  "name": "kune-node-server",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",

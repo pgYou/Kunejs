@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "dev:kune": "pnpm run dev --filter @kune/kune",
-    "build:kune-umd": "pnpm run build:umd --filter @kune/kune",
-    "dev:node-server": "pnpm run dev --filter @kune/node-server"
+    "dev:kune": "pnpm run dev --filter kunejs",
+    "build:kune-umd": "pnpm run build:umd --filter kunejs",
+    "dev:node-server": "pnpm run dev --filter kune-node-server"
   },
   "author": "",
   "license": "ISC",

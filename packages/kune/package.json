@@ -1,5 +1,5 @@
 {
-  "name": "@kune/kune",
+  "name": "kunejs",
   "version": "0.0.1",
   "description": "",
   "main": "dis/index.ts",
