@@ -2,7 +2,8 @@
   "name": "kunejs",
   "version": "0.0.1",
   "description": "",
-  "main": "dis/index.ts",
+  "main": "dist/index.js",
+  "typing": "dist/index.d.ts",
   "scripts": {
     "dev": "npm link && tsc --watch",
     "build": "tsc",
@@ -11,13 +12,14 @@
   "directories": {
     "example": "example"
   },
-  "author": "",
+  "author": "pgYou",
   "license": "ISC",
   "dependencies": {
     "eventemitter3": "^5.0.0",
     "events": "^3.3.0"
   },
   "devDependencies": {
-    "@types/eventemitter3": "^2.0.2"
+    "@types/eventemitter3": "^2.0.2",
+    "rollup-plugin-uglify": "^6.0.4"
   }
 }
